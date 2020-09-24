@@ -1,17 +1,19 @@
 package io.github.shalastra
 
-import zio.{console, App, ZEnv, ZIO}
-import zio.console.Console
+import java.io.IOException
+
+import zio.console._
+import zio.{ExitCode, URIO, ZIO}
 
 object Main extends App {
 
-  val program: ZIO[Console, Nothing, Unit] =
-    console.putStrLn("TicTacToe game!")
+  def run(args: List[String]): URIO[Console, ExitCode] =
+    myAppLogic.exitCode
 
-  def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
-    program.foldM(
-      error =>
-        console.putStrLn(s"Execution failed with: $error") *> ZIO.succeed(1),
-      _ => ZIO.succeed(0)
-    )
+  val myAppLogic: ZIO[Console, IOException, Unit] =
+    for {
+      _ <- putStrLn("Hello! What is your name?")
+      name <- getStrLn
+      _ <- putStrLn(s"Hello, ${name}, welcome to ZIO!")
+    } yield ()
 }
