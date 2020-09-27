@@ -1,0 +1,3 @@
+[submodule "machine-metrics"]
+	path = machine-metrics
+	url = https://github.com/shalastra/machine-metrics
